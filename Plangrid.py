@@ -1,4 +1,4 @@
-import requests, configparser, os
+import requests, configparser, os, json
 
 config = configparser.ConfigParser()
 config.readfp(open('config.txt'))
@@ -10,4 +10,5 @@ Header = {
 }
 
 r = requests.get(API + '/projects', headers = Header)
-print(r.text)
+j = json.loads(r.text)
+print(json.dumps(j, indent=4, sort_keys=True))
