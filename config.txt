@@ -1,4 +1,0 @@
-[Default]
-Key="API_KEY"
-ClientID="ID"
-ClientSecret="SECRET"
