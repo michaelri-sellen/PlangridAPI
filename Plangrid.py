@@ -29,6 +29,7 @@ def GetTokens():
         })
         j = json.loads(r.text)
 
+        # If the key 'error' is found in the json, show the error message. Otherwise load the tokens into the config file
         if 'error' in j:
             print("An error has occurred: " + j['error'])
         else:
