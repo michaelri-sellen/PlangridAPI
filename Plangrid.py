@@ -11,6 +11,7 @@ Client_Secret = config.get('Default', 'ClientSecret')
 # Set default variables
 API = "https://io.plangrid.com"
 RequestAccessTokenHeader = {'Content-Type': 'application/x-www-form-urlencoded'}
+DemoMode = 'apikey'
 
 # Request that the user authorize this application and provide the authorization code
 def GetTokens():
@@ -32,27 +33,39 @@ def GetTokens():
         # If the key 'error' is found in the json, show the error message. Otherwise load the tokens into the config file
         if 'error' in j:
             print("An error has occurred: " + j['error'])
-        else:
+        elif 'access_token' in j and 'refresh_token' in j:
             config['Default']['access_token'] = j['access_token']
             config['Default']['refresh_token'] = j['refresh_token']
             with open('config.txt', 'w') as configfile:
                 config.write(configfile)
             print("Oauth token saved successfully")
+        else:
+            print("No token was retrieved")
     else:
         print("No code provided")
 
 # Use collected token to run demonstration
-def RunDemo():
-    Header = {
-        'Authorization': 'Bearer ' + config.get('Default', 'access_token'),
-        'Accept': 'application/vnd.plangrid+json; version=1'
-    }
+def RunDemo(mode):
+    r = ''
+    if mode == 'oauth':
+        Header = {
+            'Authorization': 'Bearer ' + config.get('Default', 'access_token'),
+            'Accept': 'application/vnd.plangrid+json; version=1'
+        }
 
-    r = requests.get(API + '/projects', headers = Header)
-    j = json.loads(r.text)
-    print(json.dumps(j, indent=4, sort_keys=True))
+        r = requests.get(API + '/projects', headers = Header)
+    elif mode == 'apikey':
+        Header = {
+            'Accept': 'application/vnd.plangrid+json; version=1'
+        }
+
+        r = requests.get(API + '/projects', headers = Header, auth = (config.get('Default', 'key'), ''))
+    
+    if r != '':
+        j = json.loads(r.text)
+        print(json.dumps(j, indent=4, sort_keys=True))        
 
 # If the token has not been obtained, get it. Run the demo using the token.
-if len(config.get('Default', 'access_token')) == 0:
+if DemoMode == 'oauth' and len(config.get('Default', 'access_token')) == 0:
     GetTokens()
-RunDemo()
+RunDemo(DemoMode)
