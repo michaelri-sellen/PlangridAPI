@@ -1,12 +1,24 @@
-import Demo1, Demo2
+import requests, configparser, os, json
 
-switcher = {
-    1: Demo1,
-    2: Demo2
-}
+# Initialize ConfigParser
+config = configparser.ConfigParser()
+config.readfp(open('config.txt'))
 
-print("Which demo would you like to run")
-print(list(switcher.keys()))
-demonum = input()
+# Set default variables
+API = "https://io.plangrid.com"
+auth = (config.get('Default', 'key'), '')
 
-switcher.get(int(demonum)).RunDemo()
+def RunDemo():
+    Header = {
+         'Accept': 'application/vnd.plangrid+json; version=1'
+    }
+
+    r = requests.get(API + '/projects', headers = Header, auth = auth)
+    projects = json.loads(r.text)
+
+    for project in projects['data']:
+        print(project['name'])
+        issuereq = requests.get(API + '/projects/' + project['uid'] + '/issues?include_annotationless=true', headers = Header, auth = auth)
+        issues = json.loads(issuereq.text)
+        for issue in issues['data']:
+            print('    ' + str(issue['number']) + ' - ' + issue['title'])
