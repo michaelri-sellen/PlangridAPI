@@ -1,5 +1,6 @@
 import requests, configparser, json, csv
 import dateutil.parser
+from dateutil.tz import *
 from datetime import datetime
 
 # Initialize ConfigParser
@@ -35,22 +36,38 @@ def GetTasks():
 
     for project in projects['data']:
         print(project['name'])
-        issuereq = requests.get(API + '/projects/' + project['uid'] + '/issues?include_annotationless=true', headers = Header, auth = auth)
-        issues = json.loads(issuereq.text)
-        for issue in issues['data']:
-            types = ''
-            print('    ' + str(issue['number']) + ' - ' + issue['title'])
-            if issue['issue_list'] != None:
-                issue_types = requests.get(issue['issue_list']['url'], headers = Header, auth = auth)
-                types = json.loads(issue_types.text)['name']
-            else:
-                types = 'General'
-            csv_writer.writerow([
-                project['name'],
-                issue['title'],
-                types,
-                dateutil.parser.parse(issue['created_at']).strftime("%m/%d/%Y %H:%M")
-            ])
+        if project['uid'] != '0768258e-bac5-4788-a819-e8d441ae7484':
+            issuereq = requests.get(API + '/projects/' + project['uid'] + '/issues?include_annotationless=true', headers = Header, auth = auth)
+            issues = json.loads(issuereq.text)
+            for issue in issues['data']:
+                if not issue['deleted']:
+                    types = ''
+                    created_by = ''
+                    created_by_req = json.loads(requests.get(issue['created_by']['url'], headers = Header, auth = auth).text)
+                    if not 'message' in created_by_req:
+                        created_by = created_by_req['first_name'] + ' ' + created_by_req['last_name']
+
+                    print('    ' + str(issue['number']) + ' - ' + issue['title'])
+                    if issue['issue_list'] != None:
+                        issue_types = requests.get(issue['issue_list']['url'], headers = Header, auth = auth)
+                        types = json.loads(issue_types.text)['name']
+                    else:
+                        types = 'General'
+
+                    csv_writer.writerow([
+                        project['name'],
+                        issue['title'],
+                        types,
+                        dateutil.parser.parse(issue['created_at']).astimezone(tzlocal()).strftime("%m/%d/%Y %H:%M"),
+                        "",
+                        "",
+                        "",
+                        created_by,
+                        issue['cost_impact'] if issue['has_cost_impact'] and issue['cost_impact'] else "0",
+                        issue['uid']
+                    ])
+                    print(json.dumps(issue, indent=4, sort_keys=True))
+    csv_file.close()
 
 if __name__ == "__main__":
     print("Saving tasks to CSV")
