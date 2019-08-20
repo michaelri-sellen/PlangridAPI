@@ -1,3 +1,5 @@
+# This module contains functions that are used in mutiple other modules
+
 import csv # Required to output to CSV files
 import dateutil.parser # Required to read the date in ISO-8601 format
 from dateutil.tz import * # Required to shift the time from UTC to local timezone
