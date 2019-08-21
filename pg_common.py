@@ -5,9 +5,10 @@ import dateutil.parser # Required to read the date in ISO-8601 format
 from dateutil.tz import * # Required to shift the time from UTC to local timezone
 from datetime import datetime # Required to output the date/time in the expected format
 
-# Takes a date string in ISO-8601 format, parses it as a python datetime object, shifts the timezone from UTC
-# to the local timezone of the computer running this script, and formats the time as MM/DD/YYYY H:M
-def ConvertDateTime(sourcetime):
+# Takes a date string in ISO-8601 format, parses it as a python datetime object, shifts
+#the timezone from UTC to the local timezone of the computer running this script, and 
+#formats the time as MM/DD/YYYY H:M
+def DateTime(sourcetime):
     return dateutil.parser.parse(sourcetime).astimezone(tzlocal()).strftime("%m/%d/%Y %H:%M")
 
 # Manages safe writing to a CSV file
