@@ -36,7 +36,7 @@ projects = API.Call(Common.RootURL + '/projects')
 for project in projects['data']: # Repeat the below code for each project
     # Ignore sample project
     if project['uid'] != '0768258e-bac5-4788-a819-e8d441ae7484':
-        # Get a list of all issues from the API for this project
+        # Get a list of all issues for this project
         issues = API.Call(Common.RootURL + '/projects/' + project['uid'] + '/issues?include_annotationless=true')
         for issue in issues['data']: # Repeat the below code for each issue
             if not issue['deleted']: # Ignore deleted issues
@@ -69,9 +69,9 @@ for project in projects['data']: # Repeat the below code for each project
                     issue['title'],                      # DESCRIPTION
                     issue_type,                          # TYPE
                     Common.DateTime(issue['created_at']),# DATE_CREATED
-                    "",                                  # ROOT_CAUSE (Not in Plangrid)
-                    "",                                  # DIVISION (Not in Plangrid)
-                    "",                                  # CAUSED_BY (Not in Plangrid)
+                    '',                                  # ROOT_CAUSE (Not in Plangrid)
+                    '',                                  # DIVISION (Not in Plangrid)
+                    '',                                  # CAUSED_BY (Not in Plangrid)
                     created_by,                          # IDENTIFIED_BY
                     cost,                                # ESTIMATED_VALUE
                     issue['uid']                         # MD_NATURAL_KEY
