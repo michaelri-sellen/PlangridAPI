@@ -15,9 +15,6 @@
 # Import API and Common python files
 import pg_api as API, pg_common as Common
 
-# Set the root URL for the Plangrid API
-RootURL = "https://io.plangrid.com"
-
 # Create a CSV writer object from the Common module
 CSV = Common.CSV('plangrid_tasks.csv') 
 # Write the Header row to the top of the CSV file
@@ -35,12 +32,12 @@ CSV.Write([
 ])
 
 # Get a list of all projects from the API
-projects = API.Call(RootURL + '/projects')
+projects = API.Call(Common.RootURL + '/projects')
 for project in projects['data']: # Repeat the below code for each project
     # Ignore sample project
     if project['uid'] != '0768258e-bac5-4788-a819-e8d441ae7484':
         # Get a list of all issues from the API for this project
-        issues = API.Call(RootURL + '/projects/' + project['uid'] + '/issues?include_annotationless=true')
+        issues = API.Call(Common.RootURL + '/projects/' + project['uid'] + '/issues?include_annotationless=true')
         for issue in issues['data']: # Repeat the below code for each issue
             if not issue['deleted']: # Ignore deleted issues
                 # Set default values
