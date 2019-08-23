@@ -12,9 +12,6 @@
 #written to support this script. They are both located in the same directory as
 #this script
 
-# Used to pretty print JSON responses from API. Will not be in final version
-import json
-
 # Import API and Common python files
 import pg_api as API, pg_common as Common
 
