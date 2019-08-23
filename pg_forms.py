@@ -45,14 +45,14 @@ for project in projects['data']: # Repeat the below code for each project
             CSV.Write([
                 project['name'],                     # PROJECT_NAME
                 form['field_report_type']['name'],   # CHECKLIST_NAME
-                '',                                  # CHECKLIST_TYPE
+                '',                                  # CHECKLIST_TYPE (Not in Plangrid)
                 Common.DateTime(form['updated_at']), # CREATED_DATE
                 Common.DateTime(form['updated_at']), # STATUS_DATE
-                '',                                  # OPEN_TASKS
-                '',                                  # CLOSED_TASKS
+                '',                                  # OPEN_TASKS (Not in Plangrid)
+                '',                                  # CLOSED_TASKS (Not in Plangrid)
                 form['status'],                      # STATUS
-                '',                                  # OVER_DUE
-                '',                                  # COMPLETE
-                '',                                  # CLOSED
+                '',                                  # OVER_DUE (Not in Plangrid)
+                '',                                  # COMPLETE (Not in Plangrid)
+                '',                                  # CLOSED (Not in Plangrid)
                 form['uid']                          # MD_NATURAL_KEY
             ])
