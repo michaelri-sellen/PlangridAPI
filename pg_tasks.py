@@ -34,8 +34,8 @@ CSV.Write([
 # Get a list of all projects from the API
 projects = API.Call(Common.RootURL + '/projects')
 for project in projects['data']: # Repeat the below code for each project
-    # Ignore sample project
-    if project['uid'] != '0768258e-bac5-4788-a819-e8d441ae7484':
+    # Ignore sample projects
+    if not project['uid'] in Common.SampleProjects:
         # Get a list of all issues for this project
         issues = API.Call(Common.RootURL + '/projects/' + project['uid'] + '/issues?include_annotationless=true')
         for issue in issues['data']: # Repeat the below code for each issue

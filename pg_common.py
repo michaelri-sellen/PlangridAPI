@@ -8,6 +8,14 @@ from datetime import datetime # Required to output the date/time in the expected
 # Set the root URL for the Plangrid API
 RootURL = "https://io.plangrid.com"
 
+# A collection of sample or test projects that should be ignored
+SampleProjects = [
+    '0768258e-bac5-4788-a819-e8d441ae7484',
+    'e239ce91-78c2-438a-97a6-9b2e83717ba2',
+    'c3fc0b62-90ed-41cb-a063-d5adaad9056a',
+    'd88ec57b-2896-4f75-bbdb-cb750c189dad'
+]
+
 # Takes a date string in ISO-8601 format, parses it as a python datetime object, shifts
 #the timezone from UTC to the local timezone of the computer running this script, and 
 #formats the time as MM/DD/YYYY H:M

@@ -39,8 +39,8 @@ CSV.Write([
 # Get a list of all projects from the API
 projects = API.Call(Common.RootURL + '/projects')
 for project in projects['data']: # Repeat the below code for each project
-    # Ignore sample project
-    if project['uid'] != '0768258e-bac5-4788-a819-e8d441ae7484':
+    # Ignore sample projects
+    if not project['uid'] in Common.SampleProjects:
         # Get a list of all forms for this project
         forms = API.Call(Common.RootURL + '/projects/' + project['uid'] + '/field_reports')
         for form in forms['data']: # Repeat the below code for each form
